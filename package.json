@@ -1,0 +1,12 @@
+{
+  "name": "3005project",
+  "version": "1.0.0",
+  "description": "3005 Final Project Bookstore",
+  "main": "index.js",
+  "repository": "git@github.com:AdamPayzant/3005_Project.git",
+  "author": "Edward Adam Payzant",
+  "license": "MIT",
+  "scripts": {
+    "start": "./src/server.js"
+  }
+}
