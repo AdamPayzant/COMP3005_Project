@@ -1,3 +1,8 @@
 .vscode
 node_modules
 yarn.lock
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
