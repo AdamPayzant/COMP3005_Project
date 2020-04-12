@@ -1,12 +1,25 @@
 const express = require('express');
-const { Client } = require('pg');
-
+const fs = require('fs');
 const public = "./public/";
-
 let app = express();
 
+// Sends the home page
 app.get('/', (req, res)=>{
-    res.end(public + "index.html");
+    fs.readFile(public + "home.html", (err, data) => {
+        if(err) throw err;
+        res.end(data);
+    });
 });
 
-let server = app.listen(3000, ()=> {});
+// Sends the cart page
+app.get('/cart', (req, res)=> {
+    fs.readFile(public + "cart.html", (err, data) => {
+        if(err) throw err;
+        res.end(data);
+    });
+});
+
+app.listen(3000, () => {
+    console.log("Starting server on PORT 3000");
+    console.log("To view, go to http://localhost:3000");
+});
