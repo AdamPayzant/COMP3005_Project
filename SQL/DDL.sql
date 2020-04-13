@@ -4,8 +4,7 @@ create table  user
         password        varchar(max),
         user_id         int,
         email           varchar(max),
-        primary key (username, password),
-        foreign key (user_id) references orders
+        primary key (username, password)
     );
 create table orders
     (
@@ -66,7 +65,7 @@ create table phone
         phone_num       varchar(25),
         primary key(name, phone_num),
         foreign key (name) references publisher
-    )
+    );
 create table carries
     (
         store_id        int,
@@ -75,8 +74,8 @@ create table carries
         quantity        int,
         pub_cut         tinyint,
         primary key (store_id, isbn),
-        foreign key (isbn) references book,
-        foreign key (store_id) references bookstore
+        foreign key (store_id) references bookstore,
+        foreign key (isbn) references book
     );
 create table bookstore
     (
@@ -87,10 +86,31 @@ create table bookstore
 
 create table shipment
     (
-        isbn        varchar(13),
-        store_id    int,
-        pub_name    varchar(max),
-        quantity    int,
-        cost        int,
-        primary key (isbn, store_id, pub_name)
+        shipment_id     int,
+        cost            int,
+        primary key (shipment_id)
+    );
+create table ships
+    (
+        pub_name        varchar(max),
+        shipment_id     int,
+        primary key (pub_name, shipment_id),
+        foreign key (pub_name) references publisher,
+        foreign key (shipment_id) references shipment
+    );
+create table contains
+    (
+        isbn            varchar(13),
+        shipment_id     int,
+        quantity        int,
+        primary key (isbn, shipment_id),
+        foreign key (isbn) references book,
+        foreign key (shipment_id) references shipment
+    );
+create table receives
+    (
+        store_id        int,
+        shipment_id     int,
+        foreign key (store_id) references bookstore,
+        foreign key (shipment_id) references shipment
     );
