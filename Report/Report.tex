@@ -20,8 +20,6 @@
         \subsection{ER Diagram}
             \begin{center}
                 \includegraphics[scale=.65]{images/ERDiagram.png}
-                % TODO: FIX "order" relation to "orders"
-                % TODO: FIX "publishes" relation to "phone_num"
             \end{center}
         \subsection{Description}
             \begin{itemize}
@@ -41,18 +39,51 @@
     \section{Reduction to Relation Schema}
         \begin{itemize}
             \item $orders(\underline{user\_id}, \underline{order\_num})$
-            \item $item(\underline{order_num}, \underline{isbn})$
+            \item $item(\underline{order\_num}, \underline{isbn})$
             \item $publishes(\underline{isbn}, \underline{publisher})$
             \item $ships(\underline{pub\_name}, \underline{shipment\_id})$
             \item $contains(\underline{isbn}, \underline{shipment\_id}, quantity)$
             \item $receives(\underline{store\_id}, \underline{shipment\_id})$
             \item $carries(\underline{store\_id}, \underline{isbn}, price, quantity, pub\_cut)$
+            \item $threshold(\underline{store\_id}, \underline{isbn}, threshold)$
         \end{itemize}
     \section{Normalization of Relation Schema}
+        The relations in this database have been designed to have minimal functional dependencies. This results in the relations already decomposed. This can be seen by the following.
+        \subsection{orders}
+            $a$ is $user\_id$, $b$ is $order\_num$ \\
+            $ab$ is a superkey for orders, \\ 
+            $a$ does not imply $b$, $b$ does not imply $a$, therefore orders is fully decomposed
+        \subsection{item}
+            $a$ is $order\_num$, $b$ is $isbn$ \\
+            $ab$ is a superkey for item, \\ 
+            $a$ does not imply $b$, $b$ does not imply $a$, therefore item is fully decomposed
+        \subsection{publishes}
+            $a$ is $isbn$, $b$ is $publisher$ \\
+            $ab$ is a superkey for publishes \\ 
+            $a$ does not imply $b$, $b$ does not imply $a$, therefore publishes is fully decomposed
+        \subsection{ships}
+            $a$ is $pub\_name$, $b$ is $shipment\_id)$, \\
+            $ab$ is a superkey for ships, \\
+            $a$ does not imply $b$, $b$ does not imply $a$, therefore ships is fully decomposed
+        \subsection{contains}
+            $a$ is $isbn$, $b$ is $shipment\_id$, $c$ is $quantity$, \\
+            $ab$ is a superkey,
+            $ab \rightarrow c$, therefore receives is fully decomposed
+        \subsection{receives}
+            $a$ is $store\_id$, $b$ is $shipment\_id)$, \\
+            $ab$ is a superkey for receives, \\
+            $a$ does not imply $b$, $b$ does not imply $a$, therefore receives is fully decomposed
+        \subsection{carries}
+            $a$ is $store\_id$, $b$ is $isbn$, $c$ is $price$, $d$ is $quantity$, $e$ is $pub\_cut$, \\
+            $ab$ is a superkey for carries, \\
+            $ab \rightarrow c$, $ab \rightarrow d$, $ab \rightarrow e$. Due to the uniqueness and required population of $c$, $d$, and $e$, this system should not be decomposed.
+        \subsection{threshold}
+            $a$ is $store\_id$, $b$ is $isbn$, $c$ is $price$, \\
+            $ab$ is a superkey for threshold, \\
+            $ab$ implies $c$, therefore threshold is fully decomposed. Previously this was a part of carries, but, due to the potential NULL state of threshold, it was decomposed out.
     \section{Database Schema Diagram}
         \begin{center}
             \includegraphics[scale=.6]{images/SchemaDiagram.png}
-            %TODO: Remove "quantity" from shipment
         \end{center}
     \section{Implementation}
         Implementation is currently incomplete

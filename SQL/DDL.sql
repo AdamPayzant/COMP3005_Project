@@ -1,3 +1,9 @@
+/*
+Data Definitions
+    creates tables for Look Inna Book database
+
+Developed by Edward Adam Payzant 14/04/2020
+*/
 create table  user
     (
         username        varchar(20),
@@ -11,7 +17,8 @@ create table orders
         user_id         int,
         order_num       int,
         primary key (user_id, order_num),
-        foreign key (user_id) references user,
+        foreign key (user_id) references user
+            on delete drop foreign key (user_id),
         foreign key (order_num) references order
     );
 create table order
@@ -29,7 +36,7 @@ create table item
         isbn            varchar(13),
         primary key (order_num, isbn),
         foreign key (order_num) references order,
-        foreign key (isbn) references book
+        foreign key (isbn) references book (isbn)
     );
 create table book
     (
@@ -44,8 +51,8 @@ create table publishes
         isbn            varchar(13),
         publisher       varchar(max),
         primary key (isbn, publisher),
-        foreign key (isbn) references book,
-        foreign key (publisher) references publisher
+        foreign key (isbn) references book (isbn),
+        foreign key (publisher) references publisher (name)
     );
 create table publisher
     (
@@ -64,7 +71,7 @@ create table phone
         name            varchar(max),
         phone_num       varchar(25),
         primary key(name, phone_num),
-        foreign key (name) references publisher
+        foreign key (name) references publisher (name)
     );
 create table carries
     (
@@ -74,8 +81,17 @@ create table carries
         quantity        int,
         pub_cut         tinyint,
         primary key (store_id, isbn),
-        foreign key (store_id) references bookstore,
-        foreign key (isbn) references book
+        foreign key (store_id) references bookstore (store_id),
+        foreign key (isbn) references book (isbn)
+    );
+create table threshold
+    (
+        store_id        int,
+        isbn            varchar(13),
+        threshold       int,
+        primary key (store_id, isbn),
+        foreign key (store_id) references bookstore (store_id),
+        foreign key (isbn) references book (isbn)
     );
 create table bookstore
     (
@@ -83,7 +99,6 @@ create table bookstore
         store_name      varchar(max),
         primary key (store_id)
     );
-
 create table shipment
     (
         shipment_id     int,
@@ -95,8 +110,8 @@ create table ships
         pub_name        varchar(max),
         shipment_id     int,
         primary key (pub_name, shipment_id),
-        foreign key (pub_name) references publisher,
-        foreign key (shipment_id) references shipment
+        foreign key (pub_name) references publisher (name),
+        foreign key (shipment_id) references shipment (shipment_id)
     );
 create table contains
     (
@@ -104,13 +119,13 @@ create table contains
         shipment_id     int,
         quantity        int,
         primary key (isbn, shipment_id),
-        foreign key (isbn) references book,
-        foreign key (shipment_id) references shipment
+        foreign key (isbn) references book (isbn),
+        foreign key (shipment_id) references shipment (shipment_id)
     );
 create table receives
     (
         store_id        int,
         shipment_id     int,
-        foreign key (store_id) references bookstore,
-        foreign key (shipment_id) references shipment
+        foreign key (store_id) references bookstore (store_id),
+        foreign key (shipment_id) references shipment (shipment_id)
     );
