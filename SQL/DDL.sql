@@ -84,3 +84,13 @@ create table bookstore
         store_name      varchar(max),
         primary key (store_id)
     );
+
+create table shipment
+    (
+        isbn        varchar(13),
+        store_id    int,
+        pub_name    varchar(max),
+        quantity    int,
+        cost        int,
+        primary key (isbn, store_id, pub_name)
+    );
